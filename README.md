@@ -1,2 +1,3 @@
-# Web-Animation-Template
-My template repository for creating web animations
+# Contour-Lines-Animaton
+
+An animation that simulates contour lines
