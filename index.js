@@ -28,8 +28,8 @@ const lineOffsets = [{ y: 0, x: 0.5 }, { y: 0.5, x: 1 }, { y: 1, x: 0.5 }, { y: 
 const linesLookup = {
     '0000': [],
     '1111': [],
-    '0101': [],
-    '1010': [],
+    '0101': [[lineOffsets[0], lineOffsets[3]], [lineOffsets[1], lineOffsets[2]]],
+    '1010': [[lineOffsets[0], lineOffsets[1]], [lineOffsets[2], lineOffsets[3]]],
 
     '1110': [[lineOffsets[2], lineOffsets[3]]],
     '1101': [[lineOffsets[1], lineOffsets[2]]],
