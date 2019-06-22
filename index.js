@@ -12,8 +12,9 @@ canvas.width = document.body.clientWidth
 canvas.height = document.documentElement.clientHeight
 
 const points = []
-const lineSpacing = Math.max(canvas.width, canvas.height) / 10
-const cellSize = 10
+const maxDim = Math.max(canvas.width, canvas.height)
+const lineSpacing = maxDim / 10
+const cellSize = Math.ceil(maxDim / 170)
 
 ctx.fillStyle = 'black'
 ctx.strokeStyle = 'white'
