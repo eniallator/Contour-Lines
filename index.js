@@ -1,5 +1,6 @@
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
+const startText = 'Left click (or tap if touchscreen) to spawn hills'
 
 canvas.addEventListener('click', e => {
     const bounds = canvas.getBoundingClientRect()
@@ -81,9 +82,19 @@ function drawMarchingSquares(grid) {
 }
 
 function draw() {
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    if (!points.length) {
+        ctx.font = '1px Arial'
+        const fontSize = ~~(canvas.width / ctx.measureText(startText).width)
+        ctx.font = fontSize + 'px Arial'
+        const textWidth = ctx.measureText(startText).width
+
+        ctx.fillStyle = 'white'
+        ctx.fillText(startText, canvas.width / 2 - textWidth / 2, canvas.height / 2)
+        ctx.fillStyle = 'black'
+    }
     const grid = initGrid()
 
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
     drawMarchingSquares(grid)
 }
 
