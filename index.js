@@ -1,10 +1,17 @@
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
+canvas.addEventListener('click', e => {
+    const bounds = canvas.getBoundingClientRect()
+    const mouseCoords = { x: e.clientX - bounds.left, y: e.clientY - bounds.top }
+    points.push(mouseCoords)
+    draw()
+})
+
 canvas.width = document.body.clientWidth
 canvas.height = document.documentElement.clientHeight
 
-const points = [{ x: canvas.width / 4, y: canvas.height / 2 }, { x: (canvas.width * 3) / 4, y: canvas.height / 2 }]
+const points = []
 const lineSpacing = Math.max(canvas.width, canvas.height) / 10
 const cellSize = 10
 
@@ -72,11 +79,11 @@ function drawMarchingSquares(grid) {
     }
 }
 
-function start() {
+function draw() {
     const grid = initGrid()
 
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     drawMarchingSquares(grid)
 }
 
-start()
+draw()
