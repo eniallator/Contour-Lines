@@ -89,14 +89,17 @@ function drawMarchingSquares(grid) {
         const row = grid[y]
         for (let x = 0; x < row.length - 1; x++) {
             const gridPoints = directions.map(dir => grid[y + dir.y][x + dir.x])
-            const max = Math.max(...gridPoints)
-            const normalised = gridPoints.map(n => +(n === max))
-            const str = normalised.reduce((acc, val) => acc + val, '')
-            for (const line of linesLookup[str]) {
-                ctx.beginPath()
-                ctx.moveTo((line[0].x + x) * cellSize, (line[0].y + y) * cellSize)
-                ctx.lineTo((line[1].x + x) * cellSize, (line[1].y + y) * cellSize)
-                ctx.stroke()
+            const uniqueVals = [...new Set(gridPoints)]
+
+            for (let i = 0; i < uniqueVals.length - 1; i++) {
+                const normalised = gridPoints.map(n => +(n === uniqueVals[i]))
+                const str = normalised.reduce((acc, val) => acc + val, '')
+                for (const line of linesLookup[str]) {
+                    ctx.beginPath()
+                    ctx.moveTo((line[0].x + x) * cellSize, (line[0].y + y) * cellSize)
+                    ctx.lineTo((line[1].x + x) * cellSize, (line[1].y + y) * cellSize)
+                    ctx.stroke()
+                }
             }
         }
     }
