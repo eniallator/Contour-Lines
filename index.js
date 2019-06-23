@@ -3,16 +3,18 @@ const ctx = canvas.getContext('2d')
 
 const cellSizeInp = document.getElementById('cell-size')
 const cellSizeErr = document.getElementById('size-error')
+const slopeSteepness = document.getElementById('slope-steepness')
 
 const startText = 'Left click (or tap if touchscreen) to spawn hills'
 
 canvas.width = document.body.clientWidth
-canvas.height = document.documentElement.clientHeight - 60
+canvas.height = document.documentElement.clientHeight - 100
 const maxDim = Math.max(canvas.width, canvas.height)
 
-const lineSpacing = maxDim / 10
+const slopeRange = [maxDim / 25, maxDim / 5]
+
 const defaultCellSize = Math.ceil(maxDim / 170)
-const maxCellSize = ~~(lineSpacing * 0.8)
+const maxCellSize = ~~(maxDim / 8)
 let cellSize = defaultCellSize
 
 cellSizeErr.innerHTML = 'Error: cellSize must be an integer from 1 to ' + maxCellSize
@@ -20,7 +22,11 @@ cellSizeInp.placeholder = defaultCellSize
 
 canvas.addEventListener('click', e => {
     const bounds = canvas.getBoundingClientRect()
-    const mouseCoords = { x: e.clientX - bounds.left, y: e.clientY - bounds.top }
+    const mouseCoords = {
+        x: e.clientX - bounds.left,
+        y: e.clientY - bounds.top,
+        slope: slopeRange[1] - (slopeSteepness.value / (+slopeSteepness.max + 1)) * (slopeRange[1] - slopeRange[0])
+    }
     points.push(mouseCoords)
     draw()
 })
@@ -82,7 +88,7 @@ function initGrid() {
         const row = grid[y]
         for (const x in row) {
             const cell = { x: x * cellSize + cellSize / 2, y: y * cellSize + cellSize / 2 }
-            const distances = points.map(point => ~~(Math.sqrt((cell.x - point.x) ** 2 + (cell.y - point.y) ** 2) / lineSpacing))
+            const distances = points.map(point => ~~(Math.sqrt((cell.x - point.x) ** 2 + (cell.y - point.y) ** 2) / point.slope))
             row[x] = Math.min(...distances)
         }
     }
