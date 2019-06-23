@@ -3,7 +3,7 @@
 
 <head>
   <style>
-    #num-seg-error {
+    #size-error {
       color: red;
     }
 
@@ -19,9 +19,9 @@
 
 <body>
   <canvas id="canvas"></canvas>
-  Cell size (inversely affects resolution): <input id="cell-size" placeholder="10"></input>
+  Cell size (inversely affects resolution): <input id="cell-size"></input>
   <button onclick="draw()">Update</button>
-  <div id="size-error" class="hidden">Error: cellSize must be an integer from 1 to 150</div>
+  <div id="size-error" class="hidden"></div>
   <script src="index.js"></script>
 </body>
 

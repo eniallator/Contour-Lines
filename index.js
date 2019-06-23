@@ -5,8 +5,18 @@ const cellSizeInp = document.getElementById('cell-size')
 const cellSizeErr = document.getElementById('size-error')
 
 const startText = 'Left click (or tap if touchscreen) to spawn hills'
-const defaultCellSize = 10
-let cellSize = 150
+
+canvas.width = document.body.clientWidth
+canvas.height = document.documentElement.clientHeight - 60
+const maxDim = Math.max(canvas.width, canvas.height)
+
+const lineSpacing = maxDim / 10
+const defaultCellSize = Math.ceil(maxDim / 170)
+const maxCellSize = ~~(lineSpacing * 0.8)
+let cellSize = defaultCellSize
+
+cellSizeErr.innerHTML = 'Error: cellSize must be an integer from 1 to ' + maxCellSize
+cellSizeInp.placeholder = defaultCellSize
 
 canvas.addEventListener('click', e => {
     const bounds = canvas.getBoundingClientRect()
@@ -22,7 +32,7 @@ cellSizeInp.addEventListener('input', () => {
         return
     }
     const newCellSize = Number(cellSizeInp.value)
-    if (isNaN(newCellSize) || newCellSize % 1 !== 0 || newCellSize < 1 || newCellSize > 150) {
+    if (isNaN(newCellSize) || newCellSize % 1 !== 0 || newCellSize < 1 || newCellSize > maxCellSize) {
         cellSizeErr.classList.remove('hidden')
         cellSize = defaultCellSize
     } else {
@@ -31,12 +41,7 @@ cellSizeInp.addEventListener('input', () => {
     }
 })
 
-canvas.width = document.body.clientWidth
-canvas.height = document.documentElement.clientHeight - 60
-
 const points = []
-const maxDim = Math.max(canvas.width, canvas.height)
-const lineSpacing = maxDim / 10
 
 ctx.fillStyle = 'black'
 ctx.strokeStyle = 'white'
