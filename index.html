@@ -2,6 +2,15 @@
 <html lang="en">
 
 <head>
+  <style>
+    #num-seg-error {
+      color: red;
+    }
+
+    .hidden {
+      visibility: hidden;
+    }
+  </style>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -10,6 +19,9 @@
 
 <body>
   <canvas id="canvas"></canvas>
+  Cell size (inversely affects resolution): <input id="cell-size" placeholder="10"></input>
+  <button onclick="draw()">Update</button>
+  <div id="size-error" class="hidden">Error: cellSize must be an integer from 1 to 150</div>
   <script src="index.js"></script>
 </body>
 

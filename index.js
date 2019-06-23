@@ -1,6 +1,12 @@
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
+
+const cellSizeInp = document.getElementById('cell-size')
+const cellSizeErr = document.getElementById('size-error')
+
 const startText = 'Left click (or tap if touchscreen) to spawn hills'
+const defaultCellSize = 10
+let cellSize = 150
 
 canvas.addEventListener('click', e => {
     const bounds = canvas.getBoundingClientRect()
@@ -9,13 +15,28 @@ canvas.addEventListener('click', e => {
     draw()
 })
 
+cellSizeInp.addEventListener('input', () => {
+    if (cellSizeInp.value === '') {
+        cellSizeErr.classList.add('hidden')
+        cellSize = defaultCellSize
+        return
+    }
+    const newCellSize = Number(cellSizeInp.value)
+    if (isNaN(newCellSize) || newCellSize % 1 !== 0 || newCellSize < 1 || newCellSize > 150) {
+        cellSizeErr.classList.remove('hidden')
+        cellSize = defaultCellSize
+    } else {
+        cellSizeErr.classList.add('hidden')
+        cellSize = newCellSize
+    }
+})
+
 canvas.width = document.body.clientWidth
-canvas.height = document.documentElement.clientHeight
+canvas.height = document.documentElement.clientHeight - 60
 
 const points = []
 const maxDim = Math.max(canvas.width, canvas.height)
 const lineSpacing = maxDim / 10
-const cellSize = Math.ceil(maxDim / 170)
 
 ctx.fillStyle = 'black'
 ctx.strokeStyle = 'white'
@@ -48,9 +69,9 @@ const linesLookup = {
 }
 
 function initGrid() {
-    const grid = Array(~~((canvas.height + 1) / cellSize))
+    const grid = Array(Math.ceil(canvas.height / cellSize))
         .fill()
-        .map(() => Array(~~((canvas.width + 1) / cellSize)).fill())
+        .map(() => Array(Math.ceil(canvas.width / cellSize)).fill())
 
     for (const y in grid) {
         const row = grid[y]
@@ -92,6 +113,7 @@ function draw() {
         ctx.fillStyle = 'white'
         ctx.fillText(startText, canvas.width / 2 - textWidth / 2, canvas.height / 2)
         ctx.fillStyle = 'black'
+        return
     }
     const grid = initGrid()
 
